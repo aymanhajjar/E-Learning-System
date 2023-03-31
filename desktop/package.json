@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "electron": "^23.2.1"
+  },
+  "name": "e_learning_app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
