@@ -50,7 +50,7 @@ exports.addCourse = async (req, res) => {
     })
 }
 
-exports.getUsers = async (req ,res) => {
+exports.getCourses = async (req ,res) => {
     const courses = await Course.find().populate("students", "-password")
 
     res.json(courses)

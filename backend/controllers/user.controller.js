@@ -24,7 +24,7 @@ exports.requestForm = async (req, res) => {
 }
 
 exports.getFiles = async (req, res) => {
-      const { course_id } = req.body
+      const course_id  = req.params.courseid
 
       const course = Course.findById(course_id)
 
@@ -36,7 +36,8 @@ exports.getFiles = async (req, res) => {
 }
 
 exports.downloadFile = async (req, res) => {
-      const { course_id, file_id } = req.body
+      const course_id = req.params.courseid
+      const file_id = req.params.fileid
 
       const course = Course.findById(course_id)
       const file = File.findById(file_id)
