@@ -38,3 +38,20 @@ exports.login = async (req, res) => {
   res.json({ token })
 
 }
+
+exports.adminLogin = async (req, res) => {
+    const { email, password } = req.body
+  
+    const user = await User.findOne({ email, type: 'admin' })
+  
+    if (!user) return res.status(404).json({ status: "Wrong email/password" })
+  
+    const isMatched = user.matchPassword(password)
+    
+    if (!isMatched) return res.status(404).json({ status: "Wrong email/password" })
+  
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.SECRET_KEY)
+  
+    res.json({ token })
+  
+  }

@@ -56,6 +56,12 @@ exports.getCourses = async (req ,res) => {
     res.json(courses)
 }
 
+exports.getForms = async (req ,res) => {
+    const forms = await Form.find().populate("student", "-password").populate("course")
+
+    res.json(forms)
+}
+
 exports.uploadFile = async (req, res) => {
     const request = formidable({ multiples: true })
 
@@ -64,13 +70,15 @@ exports.uploadFile = async (req, res) => {
           console.error("Error parsing form data", err)
         } else {
           const { course_id, filename } = fields
-      
+
           if (files.file) {
             const file = files.file
-            const file_path = path.join(__dirname, "../public/files/", filename);
+            const ext = path.extname(file.originalFilename)
+            const name = filename + `${ext}`
+            const file_path = path.join(__dirname, "../public/files/", name);
             const course = await Course.findById(course_id)
       
-            fs.rename(file.path, file_path, async (err) => {
+            fs.rename(file.filepath, file_path, async (err) => {
               if (err) console.error(err);
       
               const new_file = await File.create({name: filename, path: file_path})

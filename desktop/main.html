@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="main-container">
+        <div class="addclass">
+            <input id="course-name" type="text" placeholder="Name">
+            <div class="duration">
+                <input id="course-duration" type="number" placeholder="Duration">
+                <span>Months</span>
+            </div>
+            <button type="button" id="course-btn">Add Course</button>
+        </div>
+        <div class="course-list">
+            <table id="course-table">
+                <th>Course</th>
+                <th>Students</th>
+            </table>
+        </div>
+        <div class="addfiles">
+            <input id="file-name" type="text" placeholder="File Name">
+            <select id="courses-select"></select>
+            <input id="file" type="file">
+            <button type="button" id="file-btn">Add File</button>
+        </div>
+        <div class="approve-forms">
+            <table id="form-table">
+                <th>Student</th>
+                <th>Course</th>
+                <th>Request</th>
+                <th>Action</th>
+            </table>
+        </div>
+    </div>
+    <script src="dashboard-renderer.js"></script>
+</body>
+</html>
