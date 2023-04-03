@@ -94,6 +94,19 @@ function createWindow() {
     }
   })
 
+  ipcMain.on('submit-approval', async (event, data) => {
+    try {
+      const response = await axios.post('http://localhost:8000/admin/approveform' , data,  {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      return []
+    }
+  })
+
 
   mainWindow.webContents.openDevTools()
 }

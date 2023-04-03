@@ -39,14 +39,18 @@ ipcRenderer.invoke('get-forms').then(data => {
             <td>${form.student.name}</td> 
             <td>${form.course.name}</td>
             <td>${form.type}</td>
-            <td class="action-btns"><button type="button" onclick="approveForm(approve, ${form._id})">Approve</button>
-        <button type="button" onclick="approveForm(reject, ${form._id})">Reject</button>
+            <td class="action-btns"><button type="button" onclick="approveForm(true, ${form._id})">Approve</button>
+        <button type="button" onclick="approveForm(false, ${form._id})">Reject</button>
         </td></tr>`
         }
     })
   }).catch(error => {
     console.error(error)
   })
+
+function approveForm(approved, form_id) {
+    ipcRenderer.send("submit-approval", { form_id, approved })
+}
 
 course_btn.addEventListener('click', () => {
     let name = course_name.value

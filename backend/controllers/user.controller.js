@@ -1,7 +1,9 @@
 const Form = require('../models/FormModel')
 const Course = require('../models/CourseModel')
 const File = require('../models/FileModel')
+const User = require('../models/UserModel')
 const jwt = require("jsonwebtoken")
+const path = require('path')
 
 exports.requestForm = async (req, res) => {
       const user = req.user
@@ -35,12 +37,19 @@ exports.getFiles = async (req, res) => {
       }
 }
 
+exports.getInfo = async (req, res) => {
+      const user = await User.findById(req.user.id).populate({path: 'courses', populate: {path: 'files', model: 'File'}})
+      const courses = await Course.find().populate("students", "-password")
+
+      res.json({user_courses: user.courses, all_courses: courses})
+}
+
 exports.downloadFile = async (req, res) => {
       const course_id = req.params.courseid
       const file_id = req.params.fileid
 
-      const course = Course.findById(course_id)
-      const file = File.findById(file_id)
+      const course = await Course.findById(course_id)
+      const file = await File.findById(file_id)
 
       if(course.students.includes(req.user.id)) {
             const file_path = path.join(__dirname, '../public/files/', file.name)

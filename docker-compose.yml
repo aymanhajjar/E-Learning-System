@@ -4,10 +4,7 @@ services:
     build: ./backend
     ports:
       - "8000:8000"
-  desktop:
-    build: ./desktop
-    ports:
-      - "6000:6000"
+      - "27018:27017"
   frontend:
     build: ./frontend
     ports:
