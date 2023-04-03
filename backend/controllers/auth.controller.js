@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt')
 
 exports.register = async (req, res) => {
-  const { email, password } = req.body
+  const { email, password, name } = req.body
 
   if(email && password) {
     const existing_user = await User.findOne({ email })
@@ -12,9 +12,12 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    User.create({ email, password: hashedPassword }).then(user => {
+    User.create({ email, password: hashedPassword, name }).then(user => {
         const { password: hashedPassword, ...newUser } = user.toJSON()
-        res.json({ status: "User created", user: newUser })
+
+        const token = jwt.sign({ id: user._id, email: user.email }, process.env.SECRET_KEY)
+
+        res.json({ status: "User created", user: newUser, token: token })
     })
 
   } else {
@@ -27,11 +30,11 @@ exports.login = async (req, res) => {
 
   const user = await User.findOne({ email })
 
-  if (!user) return res.status(404).json({ status: "Wrong email/password" })
+  if (!user) return res.status(400).json({ status: "Wrong email/password" })
 
-  const isMatched = user.matchPassword(password)
+  const isMatched = await user.matchPassword(password)
   
-  if (!isMatched) return res.status(404).json({ status: "Wrong email/password" })
+  if (!isMatched) return res.status(400).json({ status: "Wrong email/password" })
 
   const token = jwt.sign({ id: user._id, email: user.email }, process.env.SECRET_KEY)
 
@@ -44,11 +47,11 @@ exports.adminLogin = async (req, res) => {
   
     const user = await User.findOne({ email, type: 'admin' })
   
-    if (!user) return res.status(404).json({ status: "Wrong email/password" })
+    if (!user) return res.status(400).json({ status: "Wrong email/password" })
   
     const isMatched = user.matchPassword(password)
     
-    if (!isMatched) return res.status(404).json({ status: "Wrong email/password" })
+    if (!isMatched) return res.status(400).json({ status: "Wrong email/password" })
   
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.SECRET_KEY)
   

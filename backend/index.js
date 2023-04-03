@@ -3,8 +3,10 @@ const app = express()
 const auth_routes = require("./routes/auth.routes")
 const user_routes = require("./routes/user.routes")
 const admin_routes = require("./routes/admin.routes")
+const cors = require('cors')
 require("dotenv").config()
 
+app.use(cors())
 app.use(express.json())
 
 app.use("/auth", auth_routes)
